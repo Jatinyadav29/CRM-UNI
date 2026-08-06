@@ -10,20 +10,19 @@ import HomePage from "../shared/ui/pages/HomePage";
 import ProductPage from "../features/products/ui/pages/ProductPage";
 import CartPage from "../features/cart/ui/pages/CartPage";
 import OrdersPage from "../features/orders/ui/pages/OrdersPage";
-import { api } from "../config/api";
-import { hydrateUserApi } from "../features/auth/api/authApi";
+// import { api } from "../config/api";
+// import { hydrateUserApi } from "../features/auth/api/authApi";
 import { useDispatch } from "react-redux";
 import { addUser } from "../features/auth/state/authSlice";
+import { hydrateUserAction } from "../features/auth/state/authAction";
 
 const AppRoutes = () => {
   let dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
+    (() => {
       try {
-        let res = await hydrateUserApi();
-        console.log(res);
-        dispatch(addUser(res));
+        dispatch(hydrateUserAction());
       } catch (error) {
         console.log(error);
       }
