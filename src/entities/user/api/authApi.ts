@@ -45,7 +45,7 @@ export const authApi = {
       const user = DEMO_USERS.oxford;
       const token = 'mock_jwt_partner_oxford_' + Date.now();
       localStorage.setItem('accessToken', token);
-      localStorage.setItem('cachedUserId', user.id);
+      sessionStorage.setItem('cachedUserId', user.id);
       return { user, token };
     }
 
@@ -53,7 +53,7 @@ export const authApi = {
       const user = DEMO_USERS.stanford;
       const token = 'mock_jwt_partner_stanford_' + Date.now();
       localStorage.setItem('accessToken', token);
-      localStorage.setItem('cachedUserId', user.id);
+      sessionStorage.setItem('cachedUserId', user.id);
       return { user, token };
     }
 
@@ -61,7 +61,7 @@ export const authApi = {
       const user = DEMO_USERS.admin;
       const token = 'mock_jwt_director_' + Date.now();
       localStorage.setItem('accessToken', token);
-      localStorage.setItem('cachedUserId', user.id);
+      sessionStorage.setItem('cachedUserId', user.id);
       return { user, token };
     }
 
@@ -123,7 +123,7 @@ export const authApi = {
 
     const token = data.session?.access_token || 'sb_token_' + Date.now();
     localStorage.setItem('accessToken', token);
-    localStorage.setItem('cachedUserId', user.id);
+    sessionStorage.setItem('cachedUserId', user.id);
     return { user, token };
   },
 
