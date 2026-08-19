@@ -1,0 +1,88 @@
+import React, { useState, useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router';
+import { AppSidebar } from '@/widgets/app-sidebar/ui/AppSidebar';
+import { AppHeader } from '@/widgets/app-header/ui/AppHeader';
+
+export const MainLayout: React.FC = () => {
+  const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile drawer when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  const getHeaderContext = () => {
+    switch (location.pathname) {
+      case '/partner-portal':
+        return {
+          title: 'University Partner Portal',
+          subtitle: 'Institutional Overview, Signed MoU Agreement & Public Enrollment',
+        };
+      case '/main/universities':
+        return {
+          title: 'University Partner Directory',
+          subtitle: 'Accredited Higher-Ed Network & Admissions Capacity',
+        };
+      case '/main/pipeline':
+        return {
+          title: 'Institutional Sales Pipeline',
+          subtitle: 'Active Multi-Year Contract Stages & Revenue Probabilities',
+        };
+      case '/main/analytics':
+        return {
+          title: 'Executive Telemetry & Reports',
+          subtitle: 'ARR Growth, Funnel Conversions & Regional Share',
+        };
+      default:
+        return {
+          title: 'Executive Intelligence CRM',
+          subtitle: 'Global University Network & Enrollment Pipeline',
+        };
+    }
+  };
+
+  const headerContext = getHeaderContext();
+
+  return (
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex font-sans antialiased relative">
+      {/* Desktop Persistent Sidebar */}
+      <AppSidebar />
+
+      {/* Mobile Drawer Backdrop & Drawer (Stacking context: positive z-50) */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity duration-200"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Drawer Container */}
+          <div className="relative z-50 flex-1 max-w-xs w-full bg-slate-950 shadow-2xl flex flex-col animate-in slide-in-from-left duration-200">
+            <AppSidebar
+              isMobileDrawer
+              onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+        <AppHeader
+          title={headerContext.title}
+          subtitle={headerContext.subtitle}
+          onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+        />
+
+        <main className="flex-1 pb-16 px-4 sm:px-6 pt-4 sm:pt-6">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default MainLayout;

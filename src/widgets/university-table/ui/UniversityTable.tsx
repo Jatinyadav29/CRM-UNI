@@ -1,0 +1,164 @@
+import React, { useEffect, useRef } from 'react';
+import { useAppSelector } from '@/app/store/hooks';
+import { useUniversitiesQuery } from '@/entities/university/model/useUniversityQuery';
+import { UniversityCard } from '@/entities/university/ui/UniversityCard';
+import {
+  UniversityStatusBadge,
+  UniversityTierBadge,
+} from '@/entities/university/ui/UniversityBadge';
+import { formatCurrency, formatNumber } from '@/shared/lib/utils';
+import { Skeleton } from '@/shared/ui';
+import { animateStaggerCards } from '@/shared/lib/gsap';
+import { useNavigate } from 'react-router';
+import { ChevronRight } from 'lucide-react';
+
+export const UniversityTable: React.FC = () => {
+  const navigate = useNavigate();
+  const { filters, viewMode } = useAppSelector((state) => state.university);
+  const { data: universities = [], isPending } = useUniversitiesQuery(filters);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let mm: gsap.MatchMedia | undefined;
+
+    if (!isPending && universities.length > 0 && containerRef.current) {
+      const elements = containerRef.current.querySelectorAll('.stagger-item');
+      if (elements.length) {
+        mm = animateStaggerCards(elements, 0.05);
+      }
+    }
+
+    return () => {
+      mm?.revert();
+    };
+  }, [isPending, universities.length, viewMode]);
+
+  if (isPending) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <Skeleton key={i} className="h-72 w-full rounded-2xl" />
+        ))}
+      </div>
+    );
+  }
+
+  if (universities.length === 0) {
+    return (
+      <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center">
+        <h4 className="text-base font-bold text-slate-800">
+          No partner institutions found
+        </h4>
+        <p className="text-xs text-slate-500 mt-1">
+          Try clearing your search query or adjusting your tier/status filters.
+        </p>
+      </div>
+    );
+  }
+
+  // Grid View Mode
+  if (viewMode === 'grid') {
+    return (
+      <div
+        ref={containerRef}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+      >
+        {universities.map((uni) => (
+          <div key={uni.id} className="stagger-item">
+            <UniversityCard university={uni} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Table View Mode (Responsive: Stacked cards on mobile, full table on tablet & desktop)
+  return (
+    <div ref={containerRef} className="w-full">
+      {/* Mobile Stacked View */}
+      <div className="block md:hidden space-y-4">
+        {universities.map((uni) => (
+          <div key={uni.id} className="stagger-item">
+            <UniversityCard university={uni} />
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop / Tablet Table View */}
+      <div className="hidden md:block bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs text-slate-600">
+            <thead className="bg-slate-50/80 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px]">
+              <tr>
+                <th className="py-3.5 px-4">Rank</th>
+                <th className="py-3.5 px-4">Institution</th>
+                <th className="py-3.5 px-4">Tier</th>
+                <th className="py-3.5 px-4">Status</th>
+                <th className="py-3.5 px-4">Location</th>
+                <th className="py-3.5 px-4 text-right">Students</th>
+                <th className="py-3.5 px-4 text-right">Contract Value</th>
+                <th className="py-3.5 px-4 text-right">Leads</th>
+                <th className="py-3.5 px-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 font-medium">
+              {universities.map((uni) => (
+                <tr
+                  key={uni.id}
+                  onClick={() => navigate(`/main/universities/${uni.id}`)}
+                  className="stagger-item hover:bg-slate-50/80 transition-colors cursor-pointer min-h-[44px]"
+                >
+                  <td className="py-3.5 px-4 font-black text-slate-900">
+                    #{uni.globalRanking}
+                  </td>
+                  <td className="py-3.5 px-4">
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src={uni.logoUrl}
+                        alt={uni.code}
+                        className="w-7 h-7 rounded-lg object-cover border border-slate-200"
+                      />
+                      <div>
+                        <span className="font-bold text-slate-900 block">
+                          {uni.name}
+                        </span>
+                        <span className="text-[11px] text-slate-400">
+                          {uni.code}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-3.5 px-4">
+                    <UniversityTierBadge tier={uni.tier} size="sm" />
+                  </td>
+                  <td className="py-3.5 px-4">
+                    <UniversityStatusBadge status={uni.status} size="sm" />
+                  </td>
+                  <td className="py-3.5 px-4 text-slate-700">
+                    {uni.city}, {uni.country}
+                  </td>
+                  <td className="py-3.5 px-4 text-right font-bold text-slate-800">
+                    {formatNumber(uni.totalStudentBody)}
+                  </td>
+                  <td className="py-3.5 px-4 text-right font-black text-slate-900">
+                    {formatCurrency(uni.annualContractValueUsd)}
+                  </td>
+                  <td className="py-3.5 px-4 text-right font-bold text-emerald-600">
+                    {uni.activeLeadsCount}
+                  </td>
+                  <td className="py-3.5 px-4 text-center">
+                    <span className="inline-flex p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-200/60 transition-colors">
+                      <ChevronRight className="w-4 h-4" />
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UniversityTable;
