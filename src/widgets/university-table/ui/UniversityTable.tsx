@@ -35,7 +35,7 @@ export const UniversityTable: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4 sm:gap-5">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <Skeleton key={i} className="h-72 w-full rounded-2xl" />
         ))}
@@ -45,7 +45,7 @@ export const UniversityTable: React.FC = () => {
 
   if (universities.length === 0) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center shadow-sm">
+      <div className="bg-white rounded-2xl border border-slate-100 p-8 sm:p-12 text-center shadow-sm">
         <h4 className="text-base font-bold text-slate-900">
           No partner institutions found
         </h4>
@@ -56,12 +56,12 @@ export const UniversityTable: React.FC = () => {
     );
   }
 
-  // Grid View Mode — auto-fit responsive grid
+  // Grid View Mode — auto-fit responsive grid down to 320px
   if (viewMode === 'grid') {
     return (
       <div
         ref={containerRef}
-        className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5"
+        className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4 sm:gap-5"
       >
         {universities.map((uni) => (
           <div key={uni.id} className="stagger-item">
@@ -72,21 +72,19 @@ export const UniversityTable: React.FC = () => {
     );
   }
 
-  // Table View Mode (Responsive: Stacked cards on mobile, full table on tablet & desktop)
+  // Table View Mode (Responsive Hybrid: Stacked card list on mobile < md, full data table on >= md)
   return (
     <div ref={containerRef} className="w-full">
-      {/* Mobile Stacked View — auto-fit grid */}
-      <div className="block md:hidden">
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
-          {universities.map((uni) => (
-            <div key={uni.id} className="stagger-item">
-              <UniversityCard university={uni} />
-            </div>
-          ))}
-        </div>
+      {/* Mobile Stacked Card List (< md) */}
+      <div className="block md:hidden space-y-3.5">
+        {universities.map((uni) => (
+          <div key={uni.id} className="stagger-item">
+            <UniversityCard university={uni} />
+          </div>
+        ))}
       </div>
 
-      {/* Desktop / Tablet Table View */}
+      {/* Desktop / Tablet Table View (>= md) */}
       <div className="hidden md:block bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-600">
@@ -149,7 +147,7 @@ export const UniversityTable: React.FC = () => {
                     {uni.activeLeadsCount}
                   </td>
                   <td className="py-3.5 px-4 text-center">
-                    <span className="inline-flex p-2 rounded-xl text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                    <span className="inline-flex p-2 rounded-xl text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors min-h-[44px] min-w-[44px] items-center justify-center">
                       <ChevronRight className="w-4 h-4" />
                     </span>
                   </td>

@@ -4,7 +4,7 @@ import { UniversityDistribution } from '@/widgets/university-distribution/ui/Uni
 import { TimeframeSelector } from '@/features/filter-analytics/ui/TimeframeSelector';
 import { usePipelineDeals } from '@/entities/pipeline/model/usePipelineQuery';
 import { DealCard } from '@/entities/pipeline/ui/DealCard';
-import { Button, Card } from '@/shared/ui';
+import { Button } from '@/shared/ui';
 import { Link } from 'react-router';
 import { ArrowRight, Sparkles, Zap } from 'lucide-react';
 
@@ -18,23 +18,25 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-6 max-w-7xl mx-auto w-full">
-      {/* Top Banner / Welcome Bar: Clean White Card on Slate-50 Background */}
-      <Card className="p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-1.5 text-blue-600 text-xs font-bold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
+      {/* Top Welcome Banner: Solid bg-blue-600 container with crisp white typography */}
+      <div className="bg-blue-600 text-white rounded-2xl p-6 sm:p-7 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex flex-col gap-1.5">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-blue-500/40 border border-blue-400/30 text-xs font-semibold text-white self-start">
+            <Sparkles className="w-3.5 h-3.5 text-blue-200" />
             <span>Executive Performance Telemetry</span>
           </div>
-          <h2 className="text-fluid-lg font-bold text-slate-900 tracking-tight">
+          <h2 className="text-fluid-lg font-extrabold text-white tracking-tight leading-tight">
             Academic Global Pipeline Dashboard
           </h2>
-          <p className="text-xs text-slate-500 font-medium max-w-xl">
+          <p className="text-xs text-blue-100 font-normal max-w-xl leading-relaxed">
             Real-time multi-currency ARR monitoring, partner university conversion funnels, and recruitment operations across 4 continents.
           </p>
         </div>
 
-        <TimeframeSelector timeframe={timeframe} onChange={setTimeframe} />
-      </Card>
+        <div className="shrink-0 bg-white/10 backdrop-blur-xs p-1 rounded-xl border border-white/20">
+          <TimeframeSelector timeframe={timeframe} onChange={setTimeframe} />
+        </div>
+      </div>
 
       {/* Analytics Overview: 4 KPI Cards + Conversion Funnel + Revenue Forecast */}
       <AnalyticsOverview timeframe={timeframe} />
@@ -63,7 +65,8 @@ export const DashboardPage: React.FC = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Responsive Grid for High-Velocity Deals */}
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
           {priorityDeals.map((deal) => (
             <DealCard key={deal.id} deal={deal} />
           ))}

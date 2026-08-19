@@ -42,7 +42,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
       {/* Right Controls */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-        {/* Environment Badge */}
+        {/* Environment Live Badge */}
         <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-[11px] font-semibold text-emerald-700">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
           <span>Supabase Live</span>

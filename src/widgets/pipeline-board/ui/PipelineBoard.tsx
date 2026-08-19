@@ -55,9 +55,9 @@ export const PipelineBoard: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="flex gap-4 overflow-x-auto pb-6 items-start">
+      <div className="flex gap-3.5 sm:gap-4 overflow-x-auto pb-6 items-start -mx-4 px-4 sm:mx-0 sm:px-0">
         {[1, 2, 3, 4, 5, 6].map((idx) => (
-          <div key={idx} className="flex flex-col gap-3 w-80 shrink-0">
+          <div key={idx} className="flex flex-col gap-3 w-[85vw] max-w-[340px] sm:w-80 shrink-0">
             <Skeleton className="h-16 w-full rounded-2xl" />
             <Skeleton className="h-44 w-full rounded-2xl" />
             <Skeleton className="h-44 w-full rounded-2xl" />
@@ -96,17 +96,17 @@ export const PipelineBoard: React.FC = () => {
       {/* Kanban Board Columns Horizontal Scroll (Mobile-First Snap-Swipe) */}
       <div
         ref={boardRef}
-        className="flex flex-nowrap overflow-x-auto pb-6 items-start gap-4 snap-x snap-mandatory touch-pan-x scroll-smooth overscroll-x-contain"
+        className="flex flex-nowrap overflow-x-auto pb-6 items-start gap-3.5 sm:gap-4 snap-x snap-mandatory touch-pan-x scroll-smooth overscroll-x-contain -mx-4 px-4 sm:mx-0 sm:px-0"
       >
         {columns.map((column) => (
           <div
             key={column.id}
-            className="deal-column flex flex-col gap-3.5 w-[85vw] sm:w-80 shrink-0 bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100 snap-center"
+            className="deal-column flex flex-col gap-3.5 w-[85vw] max-w-[340px] sm:w-80 shrink-0 bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100 snap-center"
           >
             <StageHeader column={column} />
 
             {/* Deal cards list */}
-            <div className="flex flex-col gap-3 min-h-[260px]">
+            <div className="flex flex-col gap-3 min-h-[240px]">
               {column.deals.length === 0 ? (
                 <div className="h-32 border-2 border-dashed border-slate-100 rounded-xl flex items-center justify-center text-xs text-slate-400 font-medium">
                   No deals in this stage

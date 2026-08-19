@@ -26,7 +26,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer active:scale-[0.98] min-h-[44px] sm:min-h-0';
+      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer active:scale-[0.98] min-h-[44px] touch-manipulation';
 
     const variants = {
       primary:
@@ -42,10 +42,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: 'text-xs px-3 py-2 sm:py-1.5 gap-1.5 font-medium',
-      md: 'text-sm px-4 py-2.5 gap-2 font-medium',
-      lg: 'text-base px-5 py-3 gap-2.5 font-semibold',
-      icon: 'p-2.5 w-11 h-11 sm:w-10 sm:h-10',
+      sm: 'text-xs px-3.5 py-2 gap-1.5 font-medium sm:min-h-[36px]',
+      md: 'text-sm px-4 py-2.5 gap-2 font-medium sm:min-h-[40px]',
+      lg: 'text-base px-5 py-3 gap-2.5 font-semibold min-h-[48px]',
+      icon: 'p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center',
     };
 
     return (

@@ -7,7 +7,7 @@ export const MainLayout: React.FC = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Close mobile drawer when route changes
+  // Close mobile drawer on route transition
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
@@ -46,21 +46,21 @@ export const MainLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans antialiased relative">
-      {/* Desktop Persistent Sidebar */}
+      {/* Desktop Persistent Left Sidebar (Hidden on mobile < md) */}
       <AppSidebar />
 
-      {/* Mobile Drawer Backdrop & Drawer (Stacking context: positive z-50) */}
+      {/* Mobile Drawer (Stacking Context: Strictly Positive z-50, 0 negative z-indexes) */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex">
-          {/* Overlay */}
+          {/* Backdrop Overlay */}
           <div
             className="fixed inset-0 bg-slate-900/30 backdrop-blur-xs transition-opacity duration-200"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-hidden="true"
           />
 
-          {/* Drawer Container */}
-          <div className="relative z-50 flex-1 max-w-xs w-full bg-white shadow-sm border-r border-slate-100 flex flex-col animate-in slide-in-from-left duration-200">
+          {/* Drawer Sheet Container (320px support: w-72 max-w-[85vw]) */}
+          <div className="relative z-50 flex-1 w-72 max-w-[85vw] bg-white shadow-sm border-r border-slate-100 flex flex-col animate-in slide-in-from-left duration-200">
             <AppSidebar
               isMobileDrawer
               onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
@@ -77,10 +77,7 @@ export const MainLayout: React.FC = () => {
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
-        <main
-          className="flex-1 pb-16"
-          style={{ padding: 'var(--padding-page)', paddingBottom: '4rem' }}
-        >
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-16">
           <Outlet />
         </main>
       </div>
