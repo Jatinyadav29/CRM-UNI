@@ -32,7 +32,7 @@ export const RegisterForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3.5">
       {error && (
-        <div className="p-3 text-xs bg-rose-50 text-rose-700 border border-rose-200 rounded-xl">
+        <div className="p-3 text-xs bg-rose-50 text-rose-700 border border-rose-100 rounded-xl font-medium">
           {error}
         </div>
       )}
@@ -97,3 +97,5 @@ export const RegisterForm: React.FC = () => {
     </form>
   );
 };
+
+export default RegisterForm;

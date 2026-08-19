@@ -45,7 +45,7 @@ export const MainLayout: React.FC = () => {
   const headerContext = getHeaderContext();
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex font-sans antialiased relative">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans antialiased relative">
       {/* Desktop Persistent Sidebar */}
       <AppSidebar />
 
@@ -54,13 +54,13 @@ export const MainLayout: React.FC = () => {
         <div className="fixed inset-0 z-50 md:hidden flex">
           {/* Overlay */}
           <div
-            className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity duration-200"
+            className="fixed inset-0 bg-slate-900/30 backdrop-blur-xs transition-opacity duration-200"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-hidden="true"
           />
 
           {/* Drawer Container */}
-          <div className="relative z-50 flex-1 max-w-xs w-full bg-slate-950 shadow-2xl flex flex-col animate-in slide-in-from-left duration-200">
+          <div className="relative z-50 flex-1 max-w-xs w-full bg-white shadow-sm border-r border-slate-100 flex flex-col animate-in slide-in-from-left duration-200">
             <AppSidebar
               isMobileDrawer
               onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
@@ -77,7 +77,10 @@ export const MainLayout: React.FC = () => {
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
 
-        <main className="flex-1 pb-16 px-4 sm:px-6 pt-4 sm:pt-6">
+        <main
+          className="flex-1 pb-16"
+          style={{ padding: 'var(--padding-page)', paddingBottom: '4rem' }}
+        >
           <Outlet />
         </main>
       </div>

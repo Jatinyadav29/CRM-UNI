@@ -40,8 +40,8 @@ export const authApi = {
   async login(credentials: ILoginCredentials): Promise<{ user: IUser; token: string }> {
     const inputIdentifier = (credentials.username || credentials.email || '').toLowerCase().trim();
 
-    // Check pre-configured demo roles
-    if (inputIdentifier.includes('oxford') || credentials.role === 'university_partner') {
+    // Explicit Demo Role Quick-Fill Support
+    if (inputIdentifier === 'oxford.partner' || inputIdentifier.includes('oxford')) {
       const user = DEMO_USERS.oxford;
       const token = 'mock_jwt_partner_oxford_' + Date.now();
       localStorage.setItem('accessToken', token);
@@ -49,7 +49,7 @@ export const authApi = {
       return { user, token };
     }
 
-    if (inputIdentifier.includes('stanford')) {
+    if (inputIdentifier === 'stanford.partner' || inputIdentifier.includes('stanford')) {
       const user = DEMO_USERS.stanford;
       const token = 'mock_jwt_partner_stanford_' + Date.now();
       localStorage.setItem('accessToken', token);
@@ -57,68 +57,71 @@ export const authApi = {
       return { user, token };
     }
 
-    try {
-      const email = credentials.email || `${credentials.username || 'admin'}@genesis-edu.io`;
-
-      if (credentials.password && supabase.auth) {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password: credentials.password,
-        });
-
-        if (!error && data.user) {
-          let role: UserRole = (data.user.user_metadata?.role as UserRole) || 'partnership_director';
-          let universityId: string | undefined = data.user.user_metadata?.university_id;
-
-          // Attempt to fetch profile metadata from Supabase profiles table
-          try {
-            const { data: profile } = await supabase
-              .from('profiles' as unknown as 'universities')
-              .select('*')
-              .eq('id', data.user.id)
-              .maybeSingle();
-
-            if (profile) {
-              const p = profile as unknown as { role?: UserRole; university_id?: string };
-              if (p.role) role = p.role;
-              if (p.university_id) universityId = p.university_id;
-            }
-          } catch {
-            // ignore
-          }
-
-          const user: IUser = {
-            id: data.user.id,
-            email: data.user.email || email,
-            fullName: data.user.user_metadata?.full_name || credentials.username || 'Enterprise User',
-            avatarUrl: data.user.user_metadata?.avatar_url || DEMO_USERS.admin.avatarUrl,
-            role,
-            department: data.user.user_metadata?.department || 'Academic Partnerships',
-            assignedRegion: 'Global',
-            universityId,
-            createdAt: data.user.created_at,
-          };
-
-          const token = data.session?.access_token || 'sb_token_' + Date.now();
-          localStorage.setItem('accessToken', token);
-          localStorage.setItem('cachedUser', JSON.stringify(user));
-          return { user, token };
-        }
-      }
-    } catch {
-      // Fallback
+    if (inputIdentifier === 'alex.vance' || inputIdentifier.includes('alex')) {
+      const user = DEMO_USERS.admin;
+      const token = 'mock_jwt_director_' + Date.now();
+      localStorage.setItem('accessToken', token);
+      localStorage.setItem('cachedUser', JSON.stringify(user));
+      return { user, token };
     }
 
-    // Default fallback to Admin Director
+    // Live Supabase Authentication
+    const email = credentials.email || (credentials.username?.includes('@') ? credentials.username : `${credentials.username}@genesis-edu.io`);
+
+    if (!credentials.password) {
+      throw new Error('Password is required.');
+    }
+
+    if (!supabase || !supabase.auth) {
+      throw new Error('Supabase client is not initialized.');
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: credentials.password,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Invalid username, email, or password.');
+    }
+
+    if (!data.user) {
+      throw new Error('Authentication failed. No user record returned from server.');
+    }
+
+    let role: UserRole = (data.user.user_metadata?.role as UserRole) || 'partnership_director';
+    let universityId: string | undefined = data.user.user_metadata?.university_id;
+
+    // Fetch user profile metadata from Supabase profiles table
+    try {
+      const { data: profile } = await supabase
+        .from('profiles' as unknown as 'universities')
+        .select('*')
+        .eq('id', data.user.id)
+        .maybeSingle();
+
+      if (profile) {
+        const p = profile as unknown as { role?: UserRole; university_id?: string };
+        if (p.role) role = p.role;
+        if (p.university_id) universityId = p.university_id;
+      }
+    } catch {
+      // Non-critical profile query error
+    }
+
     const user: IUser = {
-      ...DEMO_USERS.admin,
-      fullName: credentials.username || credentials.email?.split('@')[0] || 'Alex Vance',
-      email: credentials.email || 'alex.vance@genesis-edu.io',
-      role: credentials.role || 'partnership_director',
-      universityId: credentials.universityId,
+      id: data.user.id,
+      email: data.user.email || email,
+      fullName: data.user.user_metadata?.full_name || credentials.username || 'Enterprise User',
+      avatarUrl: data.user.user_metadata?.avatar_url || DEMO_USERS.admin.avatarUrl,
+      role,
+      department: data.user.user_metadata?.department || 'Academic Partnerships',
+      assignedRegion: 'Global',
+      universityId,
+      createdAt: data.user.created_at,
     };
 
-    const token = 'mock_jwt_session_' + Date.now();
+    const token = data.session?.access_token || 'sb_token_' + Date.now();
     localStorage.setItem('accessToken', token);
     localStorage.setItem('cachedUser', JSON.stringify(user));
     return { user, token };
@@ -127,53 +130,48 @@ export const authApi = {
   async register(payload: IRegisterPayload): Promise<{ user: IUser; token: string }> {
     const role: UserRole = payload.role || (payload.universityId ? 'university_partner' : 'regional_manager');
 
-    try {
-      if (payload.password && supabase.auth) {
-        const { data, error } = await supabase.auth.signUp({
-          email: payload.email,
-          password: payload.password,
-          options: {
-            data: {
-              full_name: payload.name,
-              department: payload.department || 'Global Partnerships',
-              role,
-              university_id: payload.universityId,
-            },
-          },
-        });
+    if (!payload.email || !payload.password) {
+      throw new Error('Email and password are required for registration.');
+    }
 
-        if (!error && data.user) {
-          const user: IUser = {
-            id: data.user.id,
-            email: data.user.email || payload.email,
-            fullName: payload.name,
-            avatarUrl: DEMO_USERS.admin.avatarUrl,
-            role,
-            department: payload.department || 'Academic Partnerships',
-            assignedRegion: 'Global',
-            universityId: payload.universityId,
-            createdAt: data.user.created_at,
-          };
-          const token = data.session?.access_token || 'sb_token_' + Date.now();
-          localStorage.setItem('accessToken', token);
-          localStorage.setItem('cachedUser', JSON.stringify(user));
-          return { user, token };
-        }
-      }
-    } catch {
-      // Fallback
+    if (!supabase || !supabase.auth) {
+      throw new Error('Supabase client is not initialized.');
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email: payload.email,
+      password: payload.password,
+      options: {
+        data: {
+          full_name: payload.name,
+          department: payload.department || 'Global Partnerships',
+          role,
+          university_id: payload.universityId,
+        },
+      },
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Registration failed. Please check your details.');
+    }
+
+    if (!data.user) {
+      throw new Error('Registration failed. No user was created by the authentication server.');
     }
 
     const user: IUser = {
-      ...DEMO_USERS.admin,
-      id: 'usr_' + Date.now(),
+      id: data.user.id,
+      email: data.user.email || payload.email,
       fullName: payload.name,
-      email: payload.email,
+      avatarUrl: DEMO_USERS.admin.avatarUrl,
       role,
+      department: payload.department || 'Academic Partnerships',
+      assignedRegion: 'Global',
       universityId: payload.universityId,
-      department: payload.department || 'Global Partnerships',
+      createdAt: data.user.created_at,
     };
-    const token = 'mock_jwt_session_' + Date.now();
+
+    const token = data.session?.access_token || 'sb_token_' + Date.now();
     localStorage.setItem('accessToken', token);
     localStorage.setItem('cachedUser', JSON.stringify(user));
     return { user, token };
@@ -189,15 +187,19 @@ export const authApi = {
         return JSON.parse(cached) as IUser;
       }
     } catch {
-      // ignore
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('cachedUser');
+      return null;
     }
 
-    return DEMO_USERS.admin;
+    return null;
   },
 
   async logout(): Promise<void> {
     try {
-      await supabase.auth.signOut();
+      if (supabase && supabase.auth) {
+        await supabase.auth.signOut();
+      }
     } catch {
       // ignore
     }

@@ -35,7 +35,7 @@ export const UniversityTable: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <Skeleton key={i} className="h-72 w-full rounded-2xl" />
         ))}
@@ -45,23 +45,23 @@ export const UniversityTable: React.FC = () => {
 
   if (universities.length === 0) {
     return (
-      <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center">
-        <h4 className="text-base font-bold text-slate-800">
+      <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center shadow-sm">
+        <h4 className="text-base font-bold text-slate-900">
           No partner institutions found
         </h4>
-        <p className="text-xs text-slate-500 mt-1">
+        <p className="text-xs text-slate-500 font-medium mt-1">
           Try clearing your search query or adjusting your tier/status filters.
         </p>
       </div>
     );
   }
 
-  // Grid View Mode
+  // Grid View Mode — auto-fit responsive grid
   if (viewMode === 'grid') {
     return (
       <div
         ref={containerRef}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5"
       >
         {universities.map((uni) => (
           <div key={uni.id} className="stagger-item">
@@ -75,20 +75,22 @@ export const UniversityTable: React.FC = () => {
   // Table View Mode (Responsive: Stacked cards on mobile, full table on tablet & desktop)
   return (
     <div ref={containerRef} className="w-full">
-      {/* Mobile Stacked View */}
-      <div className="block md:hidden space-y-4">
-        {universities.map((uni) => (
-          <div key={uni.id} className="stagger-item">
-            <UniversityCard university={uni} />
-          </div>
-        ))}
+      {/* Mobile Stacked View — auto-fit grid */}
+      <div className="block md:hidden">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
+          {universities.map((uni) => (
+            <div key={uni.id} className="stagger-item">
+              <UniversityCard university={uni} />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Desktop / Tablet Table View */}
-      <div className="hidden md:block bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
+      <div className="hidden md:block bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-slate-50/80 text-slate-700 font-bold border-b border-slate-200 uppercase tracking-wider text-[10px]">
+            <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-100 uppercase tracking-wider text-[10px] sticky top-0">
               <tr>
                 <th className="py-3.5 px-4">Rank</th>
                 <th className="py-3.5 px-4">Institution</th>
@@ -101,12 +103,12 @@ export const UniversityTable: React.FC = () => {
                 <th className="py-3.5 px-4 text-center">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-medium">
+            <tbody className="divide-y divide-slate-50 font-medium">
               {universities.map((uni) => (
                 <tr
                   key={uni.id}
                   onClick={() => navigate(`/main/universities/${uni.id}`)}
-                  className="stagger-item hover:bg-slate-50/80 transition-colors cursor-pointer min-h-[44px]"
+                  className="stagger-item hover:bg-slate-50 transition-colors cursor-pointer min-h-[44px]"
                 >
                   <td className="py-3.5 px-4 font-black text-slate-900">
                     #{uni.globalRanking}
@@ -116,13 +118,13 @@ export const UniversityTable: React.FC = () => {
                       <img
                         src={uni.logoUrl}
                         alt={uni.code}
-                        className="w-7 h-7 rounded-lg object-cover border border-slate-200"
+                        className="w-7 h-7 rounded-lg object-cover border border-slate-100"
                       />
                       <div>
                         <span className="font-bold text-slate-900 block">
                           {uni.name}
                         </span>
-                        <span className="text-[11px] text-slate-400">
+                        <span className="text-[11px] text-slate-500">
                           {uni.code}
                         </span>
                       </div>
@@ -134,10 +136,10 @@ export const UniversityTable: React.FC = () => {
                   <td className="py-3.5 px-4">
                     <UniversityStatusBadge status={uni.status} size="sm" />
                   </td>
-                  <td className="py-3.5 px-4 text-slate-700">
+                  <td className="py-3.5 px-4 text-slate-500 font-medium">
                     {uni.city}, {uni.country}
                   </td>
-                  <td className="py-3.5 px-4 text-right font-bold text-slate-800">
+                  <td className="py-3.5 px-4 text-right font-bold text-slate-900">
                     {formatNumber(uni.totalStudentBody)}
                   </td>
                   <td className="py-3.5 px-4 text-right font-black text-slate-900">
@@ -147,7 +149,7 @@ export const UniversityTable: React.FC = () => {
                     {uni.activeLeadsCount}
                   </td>
                   <td className="py-3.5 px-4 text-center">
-                    <span className="inline-flex p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-200/60 transition-colors">
+                    <span className="inline-flex p-2 rounded-xl text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors">
                       <ChevronRight className="w-4 h-4" />
                     </span>
                   </td>

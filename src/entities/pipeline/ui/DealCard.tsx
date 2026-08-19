@@ -22,23 +22,23 @@ export const DealCard: React.FC<DealCardProps> = ({ deal }) => {
   const moveMutation = useMoveDealStageMutation();
 
   const priorityColors = {
-    critical: 'bg-rose-50 text-rose-700 border-rose-200',
-    high: 'bg-amber-50 text-amber-700 border-amber-200',
-    medium: 'bg-blue-50 text-blue-700 border-blue-200',
-    low: 'bg-slate-50 text-slate-600 border-slate-200',
+    critical: 'bg-rose-50 text-rose-700 border-rose-100',
+    high: 'bg-amber-50 text-amber-700 border-amber-100',
+    medium: 'bg-blue-50 text-blue-700 border-blue-100',
+    low: 'bg-slate-50 text-slate-600 border-slate-100',
   };
 
   return (
-    <Card className="p-4 flex flex-col gap-3 group border-slate-200/90 hover:border-slate-400 hover:shadow-md transition-all">
+    <Card className="p-4 flex flex-col gap-3 group hover:border-slate-200">
       {/* Top row: University badge & Priority */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <img
             src={deal.universityLogo}
             alt={deal.universityName}
-            className="w-6 h-6 rounded-lg object-cover border border-slate-200 shrink-0"
+            className="w-6 h-6 rounded-lg object-cover border border-slate-100 shrink-0"
           />
-          <span className="text-xs font-bold text-slate-800 truncate">
+          <span className="text-xs font-bold text-slate-900 truncate">
             {deal.universityName}
           </span>
         </div>
@@ -79,14 +79,14 @@ export const DealCard: React.FC<DealCardProps> = ({ deal }) => {
           <img
             src={deal.assignedRep.avatarUrl}
             alt={deal.assignedRep.name}
-            className="w-5 h-5 rounded-full object-cover border border-slate-200"
+            className="w-5 h-5 rounded-full object-cover border border-slate-100"
           />
           <span className="text-[11px] font-medium text-slate-600 truncate max-w-20">
             {deal.assignedRep.name.split(' ')[0]}
           </span>
         </div>
 
-        <div className="flex items-center gap-1 text-[11px] text-slate-400">
+        <div className="flex items-center gap-1 text-[11px] text-slate-400 font-medium">
           <Calendar className="w-3 h-3" />
           <span>{formatDate(deal.expectedCloseDate)}</span>
         </div>
@@ -103,7 +103,7 @@ export const DealCard: React.FC<DealCardProps> = ({ deal }) => {
               newStage: e.target.value as PipelineStage,
             })
           }
-          className="w-full text-xs font-semibold py-1.5 px-2.5 rounded-lg border border-slate-200 bg-slate-50/80 hover:bg-slate-100 text-slate-700 outline-none cursor-pointer transition-colors"
+          className="w-full text-xs font-semibold py-1.5 px-2.5 rounded-xl border border-slate-100 bg-white hover:bg-slate-50 text-slate-700 outline-none cursor-pointer transition-colors focus:border-blue-600"
         >
           {STAGES.map((s) => (
             <option key={s.value} value={s.value}>

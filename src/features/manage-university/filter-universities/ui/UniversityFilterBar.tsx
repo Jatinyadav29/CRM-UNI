@@ -41,7 +41,7 @@ export const UniversityFilterBar: React.FC<UniversityFilterBarProps> = ({
   }, [localSearch, dispatch, filters.search]);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-xs flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
+    <div className="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
       {/* Search Input with Debounce */}
       <div className="relative flex-1 min-w-[240px]">
         <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -50,7 +50,7 @@ export const UniversityFilterBar: React.FC<UniversityFilterBarProps> = ({
           onChange={(e) => setLocalSearch(e.target.value)}
           type="text"
           placeholder="Search partner universities, cities, countries..."
-          className="w-full bg-slate-50 border border-slate-200/90 text-slate-900 text-sm rounded-xl py-2 pl-10 pr-4 outline-none focus:bg-white focus:border-slate-800 transition-all placeholder:text-slate-400"
+          className="w-full bg-white border border-slate-100 text-slate-900 text-sm rounded-xl py-2 pl-10 pr-4 outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all placeholder:text-slate-400"
         />
       </div>
 
@@ -60,7 +60,7 @@ export const UniversityFilterBar: React.FC<UniversityFilterBarProps> = ({
         <select
           value={filters.tier || ''}
           onChange={(e) => dispatch(setTierFilter(e.target.value))}
-          className="text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 py-2 px-3 rounded-xl outline-none cursor-pointer transition-colors"
+          className="text-xs font-medium bg-white hover:bg-slate-50 border border-slate-100 text-slate-900 py-2 px-3 rounded-xl outline-none cursor-pointer transition-colors focus:border-blue-600"
         >
           <option value="">All Tiers</option>
           <option value="Tier 1 (Global Elite)">Tier 1 (Global Elite)</option>
@@ -72,7 +72,7 @@ export const UniversityFilterBar: React.FC<UniversityFilterBarProps> = ({
         <select
           value={filters.status || ''}
           onChange={(e) => dispatch(setStatusFilter(e.target.value))}
-          className="text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 py-2 px-3 rounded-xl outline-none cursor-pointer transition-colors"
+          className="text-xs font-medium bg-white hover:bg-slate-50 border border-slate-100 text-slate-900 py-2 px-3 rounded-xl outline-none cursor-pointer transition-colors focus:border-blue-600"
         >
           <option value="">All Statuses</option>
           <option value="Active Partner">Active Partner</option>
@@ -91,7 +91,7 @@ export const UniversityFilterBar: React.FC<UniversityFilterBarProps> = ({
             ];
             dispatch(setSorting({ sortBy, sortOrder }));
           }}
-          className="text-xs font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 py-2 px-3 rounded-xl outline-none cursor-pointer transition-colors"
+          className="text-xs font-medium bg-white hover:bg-slate-50 border border-slate-100 text-slate-900 py-2 px-3 rounded-xl outline-none cursor-pointer transition-colors focus:border-blue-600"
         >
           <option value="ranking-asc">Rank: Highest (#1 first)</option>
           <option value="ranking-desc">Rank: Lowest</option>
@@ -108,20 +108,20 @@ export const UniversityFilterBar: React.FC<UniversityFilterBarProps> = ({
               dispatch(resetFilters());
             }}
             title="Reset Filters"
-            className="p-2 text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
+            className="p-2 text-slate-500 hover:text-blue-600 bg-slate-50 hover:bg-blue-50 rounded-xl transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
           </button>
         )}
 
         {/* View Toggle (Grid / Table) */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80">
+        <div className="flex items-center bg-slate-50 p-1 rounded-xl border border-slate-100">
           <button
             onClick={() => dispatch(setViewMode('grid'))}
             className={`p-1.5 rounded-lg transition-all cursor-pointer ${
               viewMode === 'grid'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-400 hover:text-slate-700'
+                ? 'bg-white text-blue-700 shadow-sm'
+                : 'text-slate-400 hover:text-slate-900'
             }`}
             title="Grid View"
           >
@@ -131,8 +131,8 @@ export const UniversityFilterBar: React.FC<UniversityFilterBarProps> = ({
             onClick={() => dispatch(setViewMode('table'))}
             className={`p-1.5 rounded-lg transition-all cursor-pointer ${
               viewMode === 'table'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-400 hover:text-slate-700'
+                ? 'bg-white text-blue-700 shadow-sm'
+                : 'text-slate-400 hover:text-slate-900'
             }`}
             title="Table View"
           >

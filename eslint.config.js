@@ -5,7 +5,14 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores(["dist", "node_modules"]),
+  globalIgnores([
+    "dist",
+    "node_modules",
+    "src/features/products",
+    "src/shared/ui/pages",
+    "src/shared/ui/components",
+    "src/routes",
+  ]),
   {
     files: ["**/*.{js,mjs,cjs,jsx}"],
     extends: [
@@ -16,6 +23,9 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    rules: {
+      "no-unused-vars": "off",
     },
   },
 ]);

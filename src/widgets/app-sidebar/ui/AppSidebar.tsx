@@ -80,25 +80,25 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
   return (
     <aside
-      className={`bg-slate-950 text-slate-100 flex flex-col justify-between select-none min-h-screen ${
+      className={`bg-white text-slate-900 flex flex-col justify-between select-none min-h-screen ${
         isMobileDrawer
-          ? 'w-72 sm:w-80 shadow-2xl'
-          : 'w-64 border-r border-slate-800 shrink-0 hidden md:flex'
+          ? 'w-72 sm:w-80'
+          : 'w-64 border-r border-slate-100 shrink-0 hidden md:flex'
       }`}
     >
       {/* Brand Header */}
       <div className="flex flex-col">
-        <div className="p-5 sm:p-6 pb-5 flex items-center justify-between border-b border-slate-800/80">
+        <div className="p-5 sm:p-6 pb-5 flex items-center justify-between border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-indigo-500 to-violet-500 flex items-center justify-center shadow-md shadow-indigo-500/20 text-white font-black text-base">
+            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-sm text-white font-black text-base">
               <Building2 className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="font-extrabold text-sm text-white tracking-tight flex items-center gap-1.5">
+              <h2 className="font-extrabold text-sm text-slate-900 tracking-tight flex items-center gap-1.5">
                 Genesis CRM
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
               </h2>
-              <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+              <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
                 {isPartner ? 'Partner Portal' : 'Enterprise B2B Hub'}
               </p>
             </div>
@@ -108,7 +108,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <button
               type="button"
               onClick={onCloseMobileMenu}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-50 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -116,13 +116,13 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         </div>
 
         {/* Navigation List */}
-        <nav className="p-4 flex flex-col gap-1.5">
+        <nav className="p-4 flex flex-col gap-1">
           <div className="flex items-center justify-between px-3 py-1.5">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
               {isPartner ? 'Partner Scope' : 'Workspace'}
             </span>
             {isPartner && (
-              <span className="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-1.5 py-0.5 rounded border border-amber-500/30">
+              <span className="text-[10px] bg-amber-50 text-amber-700 font-bold px-1.5 py-0.5 rounded border border-amber-100">
                 Restricted
               </span>
             )}
@@ -139,8 +139,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-3 sm:py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 min-h-[44px] ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 font-bold'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/90'
+                    ? 'bg-blue-50 text-blue-700 font-bold'
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                 }`
               }
             >
@@ -152,21 +152,21 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       </div>
 
       {/* Footer Profile & Logout */}
-      <div className="p-4 border-t border-slate-800/80 flex flex-col gap-3">
-        <div className="flex items-center gap-3 px-2 py-2 rounded-xl bg-slate-900/60 border border-slate-800">
+      <div className="p-4 border-t border-slate-100 flex flex-col gap-3">
+        <div className="flex items-center gap-3 px-2 py-2 rounded-xl bg-slate-50 border border-slate-100">
           <UserAvatar user={user} size="sm" />
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold text-slate-200 truncate">
+            <p className="text-xs font-bold text-slate-900 truncate">
               {user?.fullName || 'Alex Vance'}
             </p>
-            <p className="text-[10px] text-slate-400 truncate flex items-center gap-1">
-              {isPartner && <ShieldAlert className="w-3 h-3 text-amber-400 shrink-0" />}
+            <p className="text-[10px] text-slate-500 truncate flex items-center gap-1">
+              {isPartner && <ShieldAlert className="w-3 h-3 text-amber-500 shrink-0" />}
               {user?.role?.replace('_', ' ') || 'partnership_director'}
             </p>
           </div>
         </div>
 
-        <LogoutButton className="justify-center w-full py-2.5 bg-slate-900 hover:bg-rose-950/40 text-rose-400 hover:text-rose-300 border border-slate-800 min-h-[44px]" />
+        <LogoutButton className="justify-center w-full py-2.5 bg-slate-50 hover:bg-rose-50 text-rose-600 hover:text-rose-700 border border-slate-100 min-h-[44px] rounded-xl" />
       </div>
     </aside>
   );

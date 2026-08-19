@@ -4,7 +4,7 @@ import { UniversityDistribution } from '@/widgets/university-distribution/ui/Uni
 import { TimeframeSelector } from '@/features/filter-analytics/ui/TimeframeSelector';
 import { usePipelineDeals } from '@/entities/pipeline/model/usePipelineQuery';
 import { DealCard } from '@/entities/pipeline/ui/DealCard';
-import { Button } from '@/shared/ui';
+import { Button, Card } from '@/shared/ui';
 import { Link } from 'react-router';
 import { ArrowRight, Sparkles, Zap } from 'lucide-react';
 
@@ -17,24 +17,24 @@ export const DashboardPage: React.FC = () => {
     .slice(0, 3);
 
   return (
-    <div className="p-6 sm:p-8 flex flex-col gap-8 max-w-7xl mx-auto w-full">
-      {/* Top Banner / Welcome Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-linear-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 sm:p-7 rounded-3xl text-white shadow-xl">
+    <div className="flex flex-col gap-6 max-w-7xl mx-auto w-full">
+      {/* Top Banner / Welcome Bar: Clean White Card on Slate-50 Background */}
+      <Card className="p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-indigo-300 text-xs font-bold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <div className="flex items-center gap-1.5 text-blue-600 text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5" />
             <span>Executive Performance Telemetry</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black tracking-tight">
+          <h2 className="text-fluid-lg font-bold text-slate-900 tracking-tight">
             Academic Global Pipeline Dashboard
           </h2>
-          <p className="text-xs text-slate-300 max-w-xl">
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
             Real-time multi-currency ARR monitoring, partner university conversion funnels, and recruitment operations across 4 continents.
           </p>
         </div>
 
         <TimeframeSelector timeframe={timeframe} onChange={setTimeframe} />
-      </div>
+      </Card>
 
       {/* Analytics Overview: 4 KPI Cards + Conversion Funnel + Revenue Forecast */}
       <AnalyticsOverview timeframe={timeframe} />
@@ -43,11 +43,11 @@ export const DashboardPage: React.FC = () => {
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-500" />
+            <h3 className="font-bold text-sm sm:text-base text-slate-900 flex items-center gap-2">
+              <Zap className="w-4 h-4 text-blue-600" />
               High-Velocity Deals Closing This Quarter
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 font-medium">
               Opportunities currently in proposal or negotiation stages
             </p>
           </div>

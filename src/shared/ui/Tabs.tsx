@@ -24,7 +24,7 @@ export const Tabs: React.FC<TabsProps> = ({
   return (
     <div
       className={cn(
-        'flex items-center gap-1 p-1 bg-slate-100/80 rounded-2xl border border-slate-200/60 overflow-x-auto select-none',
+        'flex items-center gap-1 p-1 bg-slate-50 rounded-xl border border-slate-100 overflow-x-auto select-none',
         className
       )}
     >
@@ -37,8 +37,8 @@ export const Tabs: React.FC<TabsProps> = ({
             className={cn(
               'flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap',
               isActive
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-200/40'
+                ? 'bg-white text-blue-700 shadow-sm border border-slate-100'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-white/60'
             )}
           >
             {tab.icon}
@@ -48,8 +48,8 @@ export const Tabs: React.FC<TabsProps> = ({
                 className={cn(
                   'px-1.5 py-0.5 rounded-md text-[10px] font-bold',
                   isActive
-                    ? 'bg-slate-100 text-slate-800'
-                    : 'bg-slate-200/70 text-slate-600'
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'bg-slate-100 text-slate-500'
                 )}
               >
                 {tab.count}

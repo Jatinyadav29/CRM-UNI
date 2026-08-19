@@ -18,7 +18,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   const { user } = useAppSelector((state) => state.auth);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between transition-all">
+    <header className="sticky top-0 z-40 bg-white border-b border-slate-100 px-4 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between transition-all">
       {/* Left: Mobile Drawer Trigger + Title */}
       <div className="flex items-center gap-3 min-w-0">
         {onOpenMobileMenu && (
@@ -26,24 +26,24 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
             type="button"
             onClick={onOpenMobileMenu}
             aria-label="Open Navigation Menu"
-            className="md:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer transition-colors"
+            className="md:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-50 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer transition-colors"
           >
             <Menu className="w-5 h-5" />
           </button>
         )}
 
         <div className="min-w-0">
-          <h1 className="text-sm sm:text-lg font-bold text-slate-900 leading-tight tracking-tight truncate">
+          <h1 className="text-fluid-lg font-bold text-slate-900 leading-tight tracking-tight truncate">
             {title}
           </h1>
-          <p className="text-xs text-slate-500 hidden sm:block truncate">{subtitle}</p>
+          <p className="text-xs text-slate-500 font-medium hidden sm:block truncate">{subtitle}</p>
         </div>
       </div>
 
       {/* Right Controls */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         {/* Environment Badge */}
-        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-700">
+        <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-[11px] font-semibold text-emerald-700">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
           <span>Supabase Live</span>
         </div>
@@ -52,13 +52,13 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         <button
           type="button"
           aria-label="Notifications"
-          className="relative p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors cursor-pointer"
+          className="relative p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-50 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors cursor-pointer"
         >
           <Bell className="w-4 h-4" />
-          <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-indigo-600 ring-2 ring-white" />
+          <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-blue-600 ring-2 ring-white" />
         </button>
 
-        <div className="h-6 w-px bg-slate-200 mx-0.5 sm:mx-1" />
+        <div className="h-6 w-px bg-slate-100 mx-0.5 sm:mx-1" />
 
         {/* User Profile */}
         <div className="flex items-center gap-2.5">

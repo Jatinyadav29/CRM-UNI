@@ -30,13 +30,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary:
-        'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-900 shadow-sm hover:shadow',
+        'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-600 shadow-sm hover:shadow',
       secondary:
-        'bg-slate-100 text-slate-900 hover:bg-slate-200 focus:ring-slate-300',
+        'bg-slate-100 text-slate-900 hover:bg-slate-200 focus:ring-blue-300',
       outline:
-        'border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-slate-300 focus:ring-slate-400',
+        'border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-slate-300 focus:ring-blue-400',
       ghost:
-        'text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:ring-slate-300',
+        'text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:ring-blue-300',
       danger:
         'bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 shadow-sm',
     };

@@ -5,7 +5,10 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      serializableCheck: {
+        // Enforce strict serializability across Redux state tree
+        warnAfter: 32,
+      },
     }),
 });
 

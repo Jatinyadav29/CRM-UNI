@@ -323,19 +323,55 @@ export const pipelineApi = {
 
     const now = new Date().toISOString();
 
-    try {
-      if (supabase && supabase.from) {
-        await supabase
-          .from('deals')
-          .update({
-            stage: newStage,
-            probability_percentage: probability,
-            updated_at: now,
-          })
-          .eq('id', dealId);
+    if (supabase && supabase.from) {
+      const { data, error } = await supabase
+        .from('deals')
+        .update({
+          stage: newStage,
+          probability_percentage: probability,
+          updated_at: now,
+        })
+        .eq('id', dealId)
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        throw new Error(`Failed to update deal stage in database: ${error.message}`);
       }
-    } catch {
-      // ignore
+
+      if (data) {
+        const d = data as unknown as DealRow;
+        const updatedDeal: IDeal = {
+          id: d.id,
+          universityId: d.university_id,
+          universityName: d.university_name,
+          universityLogo: d.university_logo,
+          title: d.title,
+          stage: d.stage as PipelineStage,
+          dealValueUsd: d.deal_value_usd,
+          expectedCloseDate: d.expected_close_date,
+          probabilityPercentage: d.probability_percentage,
+          priority: d.priority as IDeal['priority'],
+          assignedRep: {
+            id: d.assigned_rep_id,
+            name: d.assigned_rep_name,
+            avatarUrl: d.assigned_rep_avatar,
+            email: d.assigned_rep_email,
+          },
+          notesCount: d.notes_count,
+          lastActivityDate: d.last_activity_date,
+          createdAt: d.created_at,
+          updatedAt: d.updated_at,
+        };
+
+        if (deal) {
+          deal.stage = newStage;
+          deal.probabilityPercentage = probability;
+          deal.updatedAt = now;
+        }
+
+        return updatedDeal;
+      }
     }
 
     if (deal) {
@@ -393,9 +429,10 @@ export const pipelineApi = {
       updatedAt: new Date().toISOString(),
     };
 
-    try {
-      if (supabase && supabase.from) {
-        await supabase.from('deals').insert({
+    if (supabase && supabase.from) {
+      const { data, error } = await supabase
+        .from('deals')
+        .insert({
           university_id: newDeal.universityId,
           university_name: newDeal.universityName,
           university_logo: newDeal.universityLogo,
@@ -411,13 +448,44 @@ export const pipelineApi = {
           assigned_rep_email: newDeal.assignedRep.email,
           notes_count: newDeal.notesCount,
           last_activity_date: newDeal.lastActivityDate,
-        });
+        })
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        throw new Error(`Failed to create deal opportunity in database: ${error.message}`);
       }
-    } catch {
-      // ignore
+
+      if (data) {
+        const d = data as unknown as DealRow;
+        const createdDeal: IDeal = {
+          id: d.id,
+          universityId: d.university_id,
+          universityName: d.university_name,
+          universityLogo: d.university_logo,
+          title: d.title,
+          stage: d.stage as PipelineStage,
+          dealValueUsd: d.deal_value_usd,
+          expectedCloseDate: d.expected_close_date,
+          probabilityPercentage: d.probability_percentage,
+          priority: d.priority as IDeal['priority'],
+          assignedRep: {
+            id: d.assigned_rep_id,
+            name: d.assigned_rep_name,
+            avatarUrl: d.assigned_rep_avatar,
+            email: d.assigned_rep_email,
+          },
+          notesCount: d.notes_count,
+          lastActivityDate: d.last_activity_date,
+          createdAt: d.created_at,
+          updatedAt: d.updated_at,
+        };
+        inMemoryDeals = [createdDeal, ...inMemoryDeals];
+        return createdDeal;
+      }
     }
 
-    inMemoryDeals.unshift(newDeal);
+    inMemoryDeals = [newDeal, ...inMemoryDeals];
     return newDeal;
   },
 };

@@ -51,13 +51,13 @@ export const LoginForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {error && (
-        <div className="p-3 text-xs bg-rose-50 text-rose-700 border border-rose-200 rounded-xl">
+        <div className="p-3 text-xs bg-rose-50 text-rose-700 border border-rose-100 rounded-xl font-medium">
           {error}
         </div>
       )}
 
       {/* Quick Demo Role Selector */}
-      <div className="flex flex-col gap-1.5 p-3 bg-slate-50 border border-slate-200/80 rounded-2xl">
+      <div className="flex flex-col gap-1.5 p-3 bg-slate-50 border border-slate-100 rounded-2xl">
         <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
           Quick Demo Persona Select:
         </span>
@@ -65,17 +65,17 @@ export const LoginForm: React.FC = () => {
           <button
             type="button"
             onClick={() => handleQuickFill('admin')}
-            className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-[11px] font-bold text-slate-800 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-100 text-[11px] font-bold text-slate-800 hover:text-blue-700 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
             CRM Admin
           </button>
           <button
             type="button"
             onClick={() => handleQuickFill('oxford')}
-            className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-[11px] font-bold text-slate-800 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-blue-50 border border-slate-100 text-[11px] font-bold text-slate-800 hover:text-blue-700 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
           >
-            <GraduationCap className="w-3.5 h-3.5 text-amber-600" />
+            <GraduationCap className="w-3.5 h-3.5 text-blue-600" />
             Oxford Partner
           </button>
         </div>
@@ -107,7 +107,7 @@ export const LoginForm: React.FC = () => {
         <div className="flex justify-end">
           <a
             href="#forgot"
-            className="text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+            className="text-xs font-medium text-slate-500 hover:text-blue-600 transition-colors"
           >
             Forgot password?
           </a>
@@ -125,3 +125,5 @@ export const LoginForm: React.FC = () => {
     </form>
   );
 };
+
+export default LoginForm;

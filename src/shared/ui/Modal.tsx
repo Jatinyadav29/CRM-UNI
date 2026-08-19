@@ -50,13 +50,13 @@ export const Modal: React.FC<ModalProps> = ({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-200"
+        className="fixed inset-0 bg-slate-900/30 backdrop-blur-xs transition-opacity duration-200"
       />
 
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]',
+          'relative w-full bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]',
           maxWidths[maxWidth]
         )}
       >
@@ -68,7 +68,7 @@ export const Modal: React.FC<ModalProps> = ({
               </h3>
             )}
             {description && (
-              <p className="text-xs text-slate-500 mt-1">{description}</p>
+              <p className="text-xs text-slate-500 font-medium mt-1">{description}</p>
             )}
           </div>
           <button

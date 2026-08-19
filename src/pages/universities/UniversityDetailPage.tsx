@@ -27,10 +27,10 @@ export const UniversityDetailPage: React.FC = () => {
 
   if (isPending) {
     return (
-      <div className="p-6 sm:p-8 flex flex-col gap-6 max-w-5xl mx-auto w-full">
+      <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full">
         <Skeleton className="h-10 w-32" />
-        <Skeleton className="h-64 w-full rounded-3xl" />
-        <div className="grid grid-cols-4 gap-4">
+        <Skeleton className="h-64 w-full rounded-2xl" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <Skeleton className="h-28" />
           <Skeleton className="h-28" />
           <Skeleton className="h-28" />
@@ -44,7 +44,7 @@ export const UniversityDetailPage: React.FC = () => {
     return (
       <div className="p-12 text-center max-w-md mx-auto">
         <h3 className="text-lg font-bold text-slate-900">Partner Not Found</h3>
-        <p className="text-xs text-slate-500 mt-1 mb-4">
+        <p className="text-xs text-slate-500 font-medium mt-1 mb-4">
           The requested university profile does not exist in the database.
         </p>
         <Button onClick={() => navigate('/main/universities')}>
@@ -55,7 +55,7 @@ export const UniversityDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6 sm:p-8 flex flex-col gap-6 max-w-5xl mx-auto w-full">
+    <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full">
       {/* Back Button */}
       <div>
         <Button
@@ -69,7 +69,7 @@ export const UniversityDetailPage: React.FC = () => {
       </div>
 
       {/* Hero Header */}
-      <div className="relative rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 text-white shadow-xl">
+      <div className="relative rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 text-white shadow-sm">
         <img
           src={uni.heroImageUrl}
           alt={uni.name}
@@ -82,18 +82,18 @@ export const UniversityDetailPage: React.FC = () => {
             <img
               src={uni.logoUrl}
               alt={uni.name}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white/20 shadow-xl bg-white shrink-0"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white/20 shadow-sm bg-white shrink-0"
             />
             <div>
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 <UniversityTierBadge tier={uni.tier} />
                 <UniversityStatusBadge status={uni.status} />
               </div>
-              <h2 className="text-xl sm:text-3xl font-black text-white leading-tight">
+              <h2 className="text-xl sm:text-3xl font-bold text-white leading-tight">
                 {uni.name}
               </h2>
-              <p className="text-xs text-slate-300 flex items-center gap-1.5 mt-1">
-                <Globe className="w-3.5 h-3.5 text-indigo-400" />
+              <p className="text-xs text-slate-300 font-medium flex items-center gap-1.5 mt-1">
+                <Globe className="w-3.5 h-3.5 text-blue-400" />
                 {uni.city}, {uni.country} ({uni.code})
               </p>
             </div>
@@ -112,8 +112,8 @@ export const UniversityDetailPage: React.FC = () => {
       </div>
 
       {/* Key Metrics Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <Card className="p-4 flex flex-col gap-1 border-slate-200">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
+        <Card className="p-4 flex flex-col gap-1">
           <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
             <Award className="w-4 h-4 text-amber-500" />
             Global Ranking
@@ -121,25 +121,25 @@ export const UniversityDetailPage: React.FC = () => {
           <p className="text-2xl font-black text-slate-900 mt-1">
             #{uni.globalRanking}
           </p>
-          <span className="text-[10px] text-slate-400 font-medium">
+          <span className="text-[10px] text-slate-500 font-medium">
             World University Index
           </span>
         </Card>
 
-        <Card className="p-4 flex flex-col gap-1 border-slate-200">
+        <Card className="p-4 flex flex-col gap-1">
           <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
-            <Users className="w-4 h-4 text-indigo-500" />
+            <Users className="w-4 h-4 text-blue-600" />
             Total Enrollment
           </div>
           <p className="text-2xl font-black text-slate-900 mt-1">
             {formatNumber(uni.totalStudentBody)}
           </p>
-          <span className="text-[10px] text-slate-400 font-medium">
+          <span className="text-[10px] text-slate-500 font-medium">
             {uni.internationalStudentPercentage}% International
           </span>
         </Card>
 
-        <Card className="p-4 flex flex-col gap-1 border-slate-200">
+        <Card className="p-4 flex flex-col gap-1">
           <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
             <Percent className="w-4 h-4 text-rose-500" />
             Acceptance Rate
@@ -147,12 +147,12 @@ export const UniversityDetailPage: React.FC = () => {
           <p className="text-2xl font-black text-slate-900 mt-1">
             {uni.acceptanceRate}%
           </p>
-          <span className="text-[10px] text-slate-400 font-medium">
+          <span className="text-[10px] text-slate-500 font-medium">
             Highly Selective
           </span>
         </Card>
 
-        <Card className="p-4 flex flex-col gap-1 border-slate-200">
+        <Card className="p-4 flex flex-col gap-1">
           <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
             <DollarSign className="w-4 h-4 text-emerald-500" />
             Active CRM Leads
@@ -160,7 +160,7 @@ export const UniversityDetailPage: React.FC = () => {
           <p className="text-2xl font-black text-emerald-600 mt-1">
             {uni.activeLeadsCount}
           </p>
-          <span className="text-[10px] text-slate-400 font-medium">
+          <span className="text-[10px] text-slate-500 font-medium">
             Qualified Applicants
           </span>
         </Card>
@@ -171,7 +171,7 @@ export const UniversityDetailPage: React.FC = () => {
         {/* Programs Catalog */}
         <div className="lg:col-span-2 flex flex-col gap-4">
           <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-indigo-600" />
+            <BookOpen className="w-4 h-4 text-blue-600" />
             Partner Academic Programs ({uni.programs.length})
           </h3>
 
@@ -181,10 +181,10 @@ export const UniversityDetailPage: React.FC = () => {
                 (prog.enrolledStudents / prog.intakeCap) * 100
               );
               return (
-                <Card key={prog.id} className="p-4 border-slate-200 flex flex-col gap-2.5">
+                <Card key={prog.id} className="p-4 flex flex-col gap-2.5">
                   <div className="flex items-start justify-between">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200/60">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
                         {prog.degreeLevel}
                       </span>
                       <h4 className="font-bold text-sm text-slate-900 mt-1">
@@ -195,22 +195,22 @@ export const UniversityDetailPage: React.FC = () => {
                       <span className="text-xs font-black text-slate-900">
                         {formatCurrency(prog.annualTuitionUsd)}
                       </span>
-                      <span className="text-[10px] text-slate-400 block">/ academic year</span>
+                      <span className="text-[10px] text-slate-500 font-medium block">/ academic year</span>
                     </div>
                   </div>
 
                   {/* Enrollment Progress Bar */}
                   <div className="flex flex-col gap-1 pt-1">
-                    <div className="flex items-center justify-between text-xs text-slate-500">
+                    <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
                       <span>Enrollment Capacity</span>
-                      <span className="font-bold text-slate-700">
+                      <span className="font-bold text-slate-900">
                         {prog.enrolledStudents} / {prog.intakeCap} ({capPercentage}%)
                       </span>
                     </div>
                     <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                       <div
                         style={{ width: `${capPercentage}%` }}
-                        className="h-full bg-indigo-600 rounded-full"
+                        className="h-full bg-blue-600 rounded-full"
                       />
                     </div>
                   </div>
@@ -223,11 +223,11 @@ export const UniversityDetailPage: React.FC = () => {
         {/* Admissions Contact & Telemetry Info */}
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">
-            <Users className="w-4 h-4 text-indigo-600" />
+            <Users className="w-4 h-4 text-blue-600" />
             Primary Contact
           </h3>
 
-          <Card className="p-5 flex flex-col gap-4 border-slate-200">
+          <Card className="p-5 flex flex-col gap-4">
             <div>
               <h4 className="font-bold text-sm text-slate-900">
                 {uni.contactPerson.name}
@@ -240,7 +240,7 @@ export const UniversityDetailPage: React.FC = () => {
             <div className="flex flex-col gap-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
               <a
                 href={`mailto:${uni.contactPerson.email}`}
-                className="flex items-center gap-2 text-indigo-600 hover:underline"
+                className="flex items-center gap-2 text-blue-600 font-medium hover:underline"
               >
                 <Mail className="w-3.5 h-3.5" />
                 <span>{uni.contactPerson.email}</span>
@@ -248,14 +248,14 @@ export const UniversityDetailPage: React.FC = () => {
 
               <a
                 href={`tel:${uni.contactPerson.phone}`}
-                className="flex items-center gap-2 text-slate-600 hover:text-slate-900"
+                className="flex items-center gap-2 text-slate-600 hover:text-slate-900 font-medium"
               >
                 <Phone className="w-3.5 h-3.5" />
                 <span>{uni.contactPerson.phone}</span>
               </a>
             </div>
 
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/70 text-[11px] text-slate-500 flex items-center gap-2">
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-[11px] text-slate-500 font-medium flex items-center gap-2">
               <Calendar className="w-4 h-4 text-slate-400" />
               <span>Partner since {new Date(uni.createdAt).getFullYear()}</span>
             </div>

@@ -7,7 +7,7 @@ import {
 import { StageHeader } from '@/entities/pipeline/ui/StageHeader';
 import { DealCard } from '@/entities/pipeline/ui/DealCard';
 import { Skeleton, Button } from '@/shared/ui';
-import { Plus, Kanban, Sparkles } from 'lucide-react';
+import { Plus, Kanban } from 'lucide-react';
 import { animateStaggerCards } from '@/shared/lib/gsap';
 import { CreateDealModal } from '@/features/manage-pipeline/create-deal/ui/CreateDealModal';
 
@@ -72,13 +72,12 @@ export const PipelineBoard: React.FC = () => {
       {/* Board Controls */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <Kanban className="w-5 h-5 text-indigo-600 shrink-0" />
+          <Kanban className="w-5 h-5 text-blue-600 shrink-0" />
           <div>
-            <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+            <h3 className="font-bold text-slate-900 text-sm">
               Institutional Opportunities ({filteredDeals.length} active deals)
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             </h3>
-            <p className="text-[11px] text-slate-500 hidden sm:block">
+            <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
               Swipe across columns or drag deals across stage milestones.
             </p>
           </div>
@@ -102,14 +101,14 @@ export const PipelineBoard: React.FC = () => {
         {columns.map((column) => (
           <div
             key={column.id}
-            className="deal-column flex flex-col gap-3.5 w-[85vw] sm:w-80 shrink-0 bg-slate-100/80 p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 snap-center"
+            className="deal-column flex flex-col gap-3.5 w-[85vw] sm:w-80 shrink-0 bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-100 snap-center"
           >
             <StageHeader column={column} />
 
             {/* Deal cards list */}
             <div className="flex flex-col gap-3 min-h-[260px]">
               {column.deals.length === 0 ? (
-                <div className="h-32 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center text-xs text-slate-400 font-medium">
+                <div className="h-32 border-2 border-dashed border-slate-100 rounded-xl flex items-center justify-center text-xs text-slate-400 font-medium">
                   No deals in this stage
                 </div>
               ) : (

@@ -647,9 +647,10 @@ export const universityApi = {
       updatedAt: new Date().toISOString(),
     };
 
-    try {
-      if (supabase && supabase.from) {
-        await supabase.from('universities').insert({
+    if (supabase && supabase.from) {
+      const { data, error } = await supabase
+        .from('universities')
+        .insert({
           name: newUni.name,
           code: newUni.code,
           slug: newUni.slug,
@@ -671,13 +672,50 @@ export const universityApi = {
           contact_role: newUni.contactPerson.role,
           programs: newUni.programs as unknown as Database['public']['Tables']['universities']['Row']['programs'],
           tags: newUni.tags,
-        });
+        })
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        throw new Error(`Failed to create university partner in database: ${error.message}`);
       }
-    } catch {
-      // ignore
+
+      if (data) {
+        const row = data as unknown as UniRow;
+        const createdUni: IUniversity = {
+          id: row.id,
+          name: row.name,
+          code: row.code,
+          slug: row.slug,
+          country: row.country,
+          city: row.city,
+          logoUrl: row.logo_url,
+          heroImageUrl: row.hero_image_url,
+          tier: row.tier as IUniversity['tier'],
+          status: row.status as IUniversity['status'],
+          globalRanking: row.global_ranking,
+          acceptanceRate: row.acceptance_rate,
+          totalStudentBody: row.total_student_body,
+          internationalStudentPercentage: row.international_student_percentage,
+          annualContractValueUsd: row.annual_contract_value_usd,
+          activeLeadsCount: row.active_leads_count,
+          contactPerson: {
+            name: row.contact_name,
+            email: row.contact_email,
+            phone: row.contact_phone,
+            role: row.contact_role,
+          },
+          programs: (row.programs as unknown as IUniversity['programs']) || [],
+          tags: row.tags || [],
+          createdAt: row.created_at,
+          updatedAt: row.updated_at,
+        };
+        inMemoryUniversities = [createdUni, ...inMemoryUniversities];
+        return createdUni;
+      }
     }
 
-    inMemoryUniversities.unshift(newUni);
+    inMemoryUniversities = [newUni, ...inMemoryUniversities];
     return newUni;
   },
 
@@ -710,21 +748,20 @@ export const universityApi = {
 
     const referenceNumber = `APP-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
 
-    try {
-      if (supabase && supabase.from) {
-        // Attempt to log enrollment to Supabase
-        await supabase.from('enrollments' as unknown as 'universities').insert({
-          university_id: universityId,
-          program_id: programId,
-          student_name: studentData.fullName,
-          student_email: studentData.email,
-          student_phone: studentData.phone,
-          nationality: studentData.nationality,
-          reference_number: referenceNumber,
-        } as unknown as Database['public']['Tables']['universities']['Insert']);
+    if (supabase && supabase.from) {
+      const { error } = await supabase.from('enrollments' as unknown as 'universities').insert({
+        university_id: universityId,
+        program_id: programId,
+        student_name: studentData.fullName,
+        student_email: studentData.email,
+        student_phone: studentData.phone,
+        nationality: studentData.nationality,
+        reference_number: referenceNumber,
+      } as unknown as Database['public']['Tables']['universities']['Insert']);
+
+      if (error && !error.message?.includes('relation "enrollments" does not exist')) {
+        throw new Error(`Enrollment recording failed: ${error.message}`);
       }
-    } catch {
-      // ignore
     }
 
     return {
@@ -734,4 +771,5 @@ export const universityApi = {
     };
   },
 };
+
 
